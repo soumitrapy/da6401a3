@@ -1,0 +1,19 @@
+method: random
+metric:
+  name: loss
+  goal: minimize
+parameters:
+  emb_dim:
+    values: [32, 64, 128]
+  hidden_dim:
+    values: [64, 128]
+  num_layers:
+    values: [1, 2]
+  cell_type:
+    values: ['RNN', 'GRU', 'LSTM']
+  dropout:
+    values: [0.2, 0.3]
+  lr:
+    values: [0.001, 0.0001]
+  batch_size:
+    values: [32, 64]
