@@ -1,11 +1,21 @@
-def build_vocab(sequences):
-    chars = sorted(set(char for seq in sequences for char in seq))
-    stoi = {ch: i + 1 for i, ch in enumerate(chars)}
-    stoi['<pad>'] = 0
-    itos = {i: ch for ch, i in stoi.items()}
-    return stoi, itos
+class Vocab:
+    def __init__(self, tokens, pad_token='<pad>', sos_token='<s>', eos_token='</s>'):
+        self.pad_token = pad_token
+        self.sos_token = sos_token
+        self.eos_token = eos_token
+        self.specials = [pad_token, sos_token, eos_token]
+        unique_tokens = sorted(set(tokens) | set(self.specials))
+        self.stoi = {tok: i for i, tok in enumerate(unique_tokens)}
+        self.itos = {i: tok for tok, i in self.stoi.items()}
+        self.pad_idx = self.stoi[pad_token]
+        self.sos_idx = self.stoi[sos_token]
+        self.eos_idx = self.stoi[eos_token]
 
-def read_lexicon(path, max_len=None):
-    with open(path, 'r', encoding='utf-8') as f:
-        lines = [line.strip().split('\t')[:2] for line in f]
-    return [(r, n) for r, n in lines if (max_len is None or (len(r) <= max_len and len(n) <= max_len))]
+    def __len__(self):
+        return len(self.stoi)
+
+    def numericalize(self, text):
+        return [self.stoi[self.sos_token]] + [self.stoi[ch] for ch in text] + [self.stoi[self.eos_token]]
+
+    def textify(self, indices):
+        return ''.join([self.itos[i] for i in indices if self.itos[i] not in self.specials])
