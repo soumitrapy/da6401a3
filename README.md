@@ -20,3 +20,29 @@ dakshina-transliteration/
 ├── README.md                       # Project description and instructions
 └── .gitignore                      # Ignore datasets, checkpoints, etc.
 ```
+
+# Dakshina Transliteration with wandb Sweeps
+
+This project trains a Seq2Seq model on the Dakshina dataset (e.g., Hindi) to perform transliteration from Latin script to native script.
+
+## Setup
+
+```bash
+git clone https://github.com/yourname/dakshina-transliteration
+cd dakshina-transliteration
+pip install -r requirements.txt
+```
+* Download the dataset
+```
+wget https://storage.googleapis.com/gresearch/dakshina/dakshina_dataset_v1.0.zip -P data/
+unzip data/dakshina_dataset_v1.0.zip -d data/
+```
+* Train
+```
+python train.py
+```
+Run sweep
+```
+wandb sweep sweep_config.yaml
+wandb agent your-sweep-id
+```
